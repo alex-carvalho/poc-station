@@ -12,7 +12,7 @@ sudo systemctl enable --now docker
 sudo usermod -aG docker ec2-user
 
 curl -fsSL https://tailscale.com/install.sh | sh
-tailscale up --authkey="${tailscale_auth_key}" --accept-routes
+tailscale up --authkey="${tailscale_auth_key}" --accept-routes --ssh
 
 ARCH=$(uname -m)
 if [ "$ARCH" = "x86_64" ]; then
