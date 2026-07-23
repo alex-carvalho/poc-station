@@ -51,7 +51,18 @@ Se você estiver rodando o Terraform diretamente do **AWS CloudShell** para não
    terraform apply
    ```
 
-### 3. Acessar a Instância
+### 3. Acessar a Instância (Shell e Kubernetes)
 * Cerca de 2 minutos após o Terraform concluir o `apply`, a instância aparecerá no seu painel web do Tailscale e no aplicativo local do seu computador.
 * Ela receberá um IP privado do Tailscale (ex: `100.x.y.z`).
-* A partir do terminal da sua máquina local (com o Tailscale conectado), você pode acessar a EC2 por meio do usuário padrão `ec2-user` ou usar diretamente o IP privado da VPN para se conectar com o Kubernetes (Kind) no endereço `https://IP-DO-TAILSCALE:6443`.
+
+#### Para acessar o terminal da EC2 (sem chaves SSH ou credenciais AWS):
+Como ativamos o **Tailscale SSH**, você pode se conectar no terminal da máquina rodando este comando no terminal do seu computador:
+```bash
+tailscale ssh ec2-user@<IP-DO-TAILSCALE>
+```
+
+#### Para acessar o Kubernetes (Kind) diretamente do seu computador:
+Basta usar o IP do Tailscale nas configurações do `kubectl` apontando para a porta `6443`:
+```text
+https://<IP-DO-TAILSCALE>:6443
+```
