@@ -2,7 +2,7 @@
 set -e
 
 sudo apt-get update -y
-sudo apt-get install -y gnupg software-properties-common curl wget unzip
+sudo apt-get install -y gnupg software-properties-common curl wget unzip git
 
 wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
 echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
@@ -33,3 +33,5 @@ sudo mv ./kind /usr/local/bin/kind
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/$${KUBECTL_ARCH}/kubectl"
 chmod +x ./kubectl
 sudo mv ./kubectl /usr/local/bin/kubectl
+
+sudo -u ubuntu git clone https://github.com/alex-carvalho/sandbox.git /home/ubuntu/sandbox
