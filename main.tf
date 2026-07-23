@@ -1,17 +1,5 @@
-data "aws_ami" "ubuntu_arm" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-arm64-server-*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["099720109477"]
+data "aws_ssm_parameter" "al2023_ami" {
+  name = "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-arm64"
 }
 
 data "aws_vpc" "default" {
@@ -70,7 +58,7 @@ resource "aws_iam_instance_profile" "devops_profile" {
 }
 
 resource "aws_instance" "devops_lab" {
-  ami                    = data.aws_ami.ubuntu_arm.id
+  ami                    = data.aws_ssm_parameter.al2023_ami.value
   instance_type          = var.instance_type
   subnet_id              = data.aws_subnets.default.ids[0]
   vpc_security_group_ids = [aws_security_group.devops_sg.id]

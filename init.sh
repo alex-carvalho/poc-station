@@ -1,18 +1,15 @@
 #!/bin/bash
 set -e
 
-sudo apt-get update -y
-sudo apt-get install -y gnupg software-properties-common curl wget unzip git
+sudo dnf update -y
+sudo dnf install -y dnf-plugins-core git curl wget unzip
 
-wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo dnf config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+sudo dnf install -y terraform
 
-sudo apt-get update -y
-sudo apt-get install -y terraform docker.io
-
-sudo systemctl enable docker
-sudo systemctl start docker
-sudo usermod -aG docker ubuntu
+sudo dnf install -y docker
+sudo systemctl enable --now docker
+sudo usermod -aG docker ec2-user
 
 curl -fsSL https://tailscale.com/install.sh | sh
 tailscale up --authkey="${tailscale_auth_key}" --accept-routes
@@ -34,4 +31,4 @@ curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stabl
 chmod +x ./kubectl
 sudo mv ./kubectl /usr/local/bin/kubectl
 
-sudo -u ubuntu git clone https://github.com/alex-carvalho/sandbox.git /home/ubuntu/sandbox
+sudo -u ec2-user git clone https://github.com/alex-carvalho/sandbox.git /home/ec2-user/sandbox
