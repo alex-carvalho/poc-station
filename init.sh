@@ -14,6 +14,9 @@ sudo systemctl enable docker
 sudo systemctl start docker
 sudo usermod -aG docker ubuntu
 
+curl -fsSL https://tailscale.com/install.sh | sh
+tailscale up --authkey="${tailscale_auth_key}" --accept-routes
+
 ARCH=$(uname -m)
 if [ "$ARCH" = "x86_64" ]; then
   KIND_ARCH="amd64"
@@ -23,10 +26,10 @@ else
   KUBECTL_ARCH="arm64"
 fi
 
-curl -Lo ./kind "https://kind.sigs.k8s.io/dl/v0.24.0/kind-linux-${KIND_ARCH}"
+curl -Lo ./kind "https://kind.sigs.k8s.io/dl/v0.24.0/kind-linux-$${KIND_ARCH}"
 chmod +x ./kind
 sudo mv ./kind /usr/local/bin/kind
 
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${KUBECTL_ARCH}/kubectl"
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/$${KUBECTL_ARCH}/kubectl"
 chmod +x ./kubectl
 sudo mv ./kubectl /usr/local/bin/kubectl

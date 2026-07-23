@@ -75,7 +75,9 @@ resource "aws_instance" "devops_lab" {
   subnet_id              = data.aws_subnets.default.ids[0]
   vpc_security_group_ids = [aws_security_group.devops_sg.id]
   iam_instance_profile   = aws_iam_instance_profile.devops_profile.name
-  user_data              = file("${path.module}/init.sh")
+  user_data              = templatefile("${path.module}/init.sh", {
+    tailscale_auth_key = var.tailscale_auth_key
+  })
 
   instance_market_options {
     market_type = "spot"

@@ -12,3 +12,8 @@ variable "volume_size" {
   type    = number
   default = 30
 }
+
+variable "tailscale_auth_key" {
+  type      = string
+  sensitive = true
+}
